@@ -1,4 +1,4 @@
-0x1B. C - Sorting algorithms & Big O
+# 0x1B. C - Sorting algorithms & Big O
 
 0. Write a function that sorts an array of integers in ascending order using the Bubble sort algorithm
 
@@ -134,7 +134,6 @@ Write in the file 107-O, the big O notations of the time complexity of the Quick
 in the best case
 in the average case
 in the worst case
-
 12. Write a function that sorts a deck of cards.
 
 Prototype: void sort_deck(deck_node_t **deck);
