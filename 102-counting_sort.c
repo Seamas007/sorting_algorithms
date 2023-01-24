@@ -1,68 +1,52 @@
 #include "sort.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 /**
- * get_max - Get the maximum value in an array of integers.
- * @array: An array of integers.
- * @size: The size of the array.
- *
- * Return: The maximum integer in the array.
- */
-int get_max(int *array, int size)
-{
-	int max, i;
-
-	for (max = array[0], i = 1; i < size; i++)
-	{
-		if (array[i] > max)
-			max = array[i];
-	}
-
-	return (max);
-}
-
-/**
- * counting_sort - Sort an array of integers in ascending order
- *                 using the counting sort algorithm.
- * @array: An array of integers.
- * @size: The size of the array.
- *
- * Description: Prints the counting array after setting it up.
- */
+  * counting_sort - Afunction that sorts an array using counting algorithm.
+  * @array: The array to sort.
+  * @size: The length of the array.
+  * Return: Nothing.
+  */
 void counting_sort(int *array, size_t size)
 {
-	int *count, *sorted, max, i;
+	unsigned int i = 1;
+	int *counter = NULL, k = 0, j = 0;
 
 	if (array == NULL || size < 2)
 		return;
 
-	sorted = malloc(sizeof(int) * size);
-	if (sorted == NULL)
-		return;
-	max = get_max(array, size);
-	count = malloc(sizeof(int) * (max + 1));
-	if (count == NULL)
+	k = array[0];
+	for (; i < size; i++)
 	{
-		free(sorted);
-		return;
+		if (array[i] > k)
+			k = array[i];
 	}
 
-	for (i = 0; i < (max + 1); i++)
-		count[i] = 0;
-	for (i = 0; i < (int)size; i++)
-		count[array[i]] += 1;
-	for (i = 0; i < (max + 1); i++)
-		count[i] += count[i - 1];
-	print_array(count, max + 1);
+	counter = malloc(sizeof(int) * (k + 1));
+	if (counter == NULL)
+		return;
 
-	for (i = 0; i < (int)size; i++)
+	for (j = 0; j <= k; j++)
+		counter[j] = 0;
+	for (i = 0; i < size; i++)
+		counter[array[i]] += 1;
+	for (j = 0; j < k; j++)
 	{
-		sorted[count[array[i]] - 1] = array[i];
-		count[array[i]] -= 1;
+		counter[j + 1] += counter[j];
+		printf("%d, ", counter[j]);
 	}
-
-	for (i = 0; i < (int)size; i++)
-		array[i] = sorted[i];
-
-	free(sorted);
-	free(count);
+	counter[j + 1] += counter[j];
+	printf("%d\n", counter[j + 1]);
+	for (i = 0; i < size; i++)
+	{
+		j = counter[array[i]] - 1;
+		if (array[i] != array[j])
+		{
+			k = array[i];
+			array[i] = array[j];
+			array[j] = k;
+		}
+	}
+	free(counter);
 }
